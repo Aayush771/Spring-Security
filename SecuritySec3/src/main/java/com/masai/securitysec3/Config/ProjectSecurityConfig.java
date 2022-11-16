@@ -29,70 +29,74 @@ public class ProjectSecurityConfig {
      * @return SecurityFilterChain
      * @throws Exception
      */
-    @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
-        /**
-         * Custom configurations as per our requirement
-         */
-        http.authorizeHttpRequests((auth) -> auth
-                .antMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                .antMatchers("/notices", "/contact").permitAll()
-        ).httpBasic(Customizer.withDefaults());
-        return http.build();
-
-    }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        /*
-      Approach 1 where we use withDefaultPasswordEncoder() method
-      while creating the user details
-     */
-        /*UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("12345")
-                .authorities("admin")
-                .build();
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("12345")
-                .authorities("read")
-                .build();
-        return new InMemoryUserDetailsManager(admin, user);
-    }*/
-     /*
-     * Approach 2 where we don't define password encoder
-     * while creating the user details. Instead a separate
-     * PasswordEncoder bean will be created.
-     */
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-        UserDetails admin = User.withUsername("admin")
-                .password("12345")
-                .authorities("admin")
-                .build();
-        UserDetails user = User.withUsername("user")
-                .password("12345")
-                .authorities("read")
-                .build();
-        userDetailsService.createUser(admin);
-        userDetailsService.createUser(user);
-        return userDetailsService;
-    }
-
+//
 //    @Bean
-//    public UserDetailsService userDetailsService(DataSource dataSource) {
-//	  return new JdbcUserDetailsManager(dataSource);
+//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//
+//        /**
+//         * Custom configurations as per our requirement
+//         */
+//        http.authorizeHttpRequests((auth) -> auth
+//                .antMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+//                .antMatchers("/notices", "/contact").permitAll()
+//        ).httpBasic(Customizer.withDefaults());
+//        return http.build();
+//
 //    }
 
-    /**
-     * NoOpPasswordEncoder is not recommended for production usage.
-     * Use only for non-prod.
-     *
-     * @return
-     */
+   // @Bean
+//    public InMemoryUserDetailsManager userDetailsService() {
+//        /*
+//      Approach 1 where we use withDefaultPasswordEncoder() method
+//      while creating the user details
+//     */
+//        /*UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("12345")
+//                .authorities("admin")
+//                .build();
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("12345")
+//                .authorities("read")
+//                .build();
+//        return new InMemoryUserDetailsManager(admin, user);
+//    }*/
+//     /*
+//     * Approach 2 where we don't define password encoder
+//     * while creating the user details. Instead a separate
+//     * PasswordEncoder bean will be created.
+//     */
+//        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
+//        UserDetails admin = User.withUsername("admin")
+//                .password("12345")
+//                .authorities("admin")
+//                .build();
+//        UserDetails user = User.withUsername("user")
+//                .password("12345")
+//                .authorities("read")
+//                .build();
+//        userDetailsService.createUser(admin);
+//        userDetailsService.createUser(user);
+//        return userDetailsService;
+//    }
+//
+////    @Bean
+////    public UserDetailsService userDetailsService(DataSource dataSource) {
+////	  return new JdbcUserDetailsManager(dataSource);
+////    }
+//
+//    /**
+//     * NoOpPasswordEncoder is not recommended for production usage.
+//     * Use only for non-prod.
+//     *
+//     * @return
+//     */
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+	 return new JdbcUserDetailsManager(dataSource); }
+    @Bean
+   public PasswordEncoder passwordEncoder() {
+       return NoOpPasswordEncoder.getInstance();
+  }
 }

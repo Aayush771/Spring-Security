@@ -30,19 +30,19 @@ public class ProjectSecurityConfig {
      * @throws Exception
      */
 //
-//    @Bean
-//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//
-//        /**
-//         * Custom configurations as per our requirement
-//         */
-//        http.authorizeHttpRequests((auth) -> auth
-//                .antMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-//                .antMatchers("/notices", "/contact").permitAll()
-//        ).httpBasic(Customizer.withDefaults());
-//        return http.build();
-//
-//    }
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        /**
+         * Custom configurations as per our requirement
+         */
+        http.csrf().disable().authorizeHttpRequests((auth) -> auth
+                .antMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+                .antMatchers("/notices", "/contact","/register").permitAll()
+        ).formLogin().and().httpBasic(Customizer.withDefaults());
+        return http.build();
+
+    }
 
    // @Bean
 //    public InMemoryUserDetailsManager userDetailsService() {
@@ -92,9 +92,9 @@ public class ProjectSecurityConfig {
 //     *
 //     * @return
 //     */
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-	 return new JdbcUserDetailsManager(dataSource); }
+//    @Bean
+//    public UserDetailsService userDetailsService(DataSource dataSource) {
+//	 return new JdbcUserDetailsManager(dataSource); }
     @Bean
    public PasswordEncoder passwordEncoder() {
        return NoOpPasswordEncoder.getInstance();

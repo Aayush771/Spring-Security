@@ -1,5 +1,7 @@
 package com.masai.securitysec3.Model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,11 +10,15 @@ import javax.persistence.Id;
 @Entity
 public class Customer {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy= GenerationType.AUTO,generator = "native")
+    @GenericGenerator(name = "native",strategy = "native")
+    private int id;
     private String email;
     private String pwd;
     private String role;
+
+    public Customer() {
+    }
 
     public int getId() {
         return id;
@@ -43,6 +49,13 @@ public class Customer {
     }
 
     public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Customer(int id, String email, String pwd, String role) {
+        this.id = id;
+        this.email = email;
+        this.pwd = pwd;
         this.role = role;
     }
 }

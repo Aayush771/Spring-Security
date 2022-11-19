@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDate;
 
 @Entity
 public class Customer {
@@ -19,11 +19,11 @@ public class Customer {
 	private String email;
 	@Column(name = "mobile_number")
 	private String mobileNumber;
-	@JsonIgnore
+
 	private String pwd;
 	private String role;
 	@Column(name = "create_dt")
-	private String createDt;
+	private LocalDate createDt = LocalDate.now();
 
 	public int getId() {
 		return id;
@@ -73,11 +73,11 @@ public class Customer {
 		this.role = role;
 	}
 
-	public String getCreateDt() {
+	public LocalDate getCreateDt() {
 		return createDt;
 	}
 
-	public void setCreateDt(String createDt) {
+	public void setCreateDt(LocalDate createDt) {
 		this.createDt = createDt;
 	}
 }

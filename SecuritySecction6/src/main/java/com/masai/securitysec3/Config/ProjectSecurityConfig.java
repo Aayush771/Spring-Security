@@ -38,22 +38,22 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors().configurationSource(new CorsConfigurationSource() {
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-                        config.setAllowedMethods(Collections.singletonList("*"));
-                        config.setAllowCredentials(true);
-                        config.setAllowedHeaders(Collections.singletonList("*"));
-                        config.setMaxAge(3600L);
-                        return config;
-                    }
-                }).and().csrf().ignoringAntMatchers("/contact").
-                csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and().authorizeHttpRequests((auth) -> auth
+//        http.cors().configurationSource(new CorsConfigurationSource() {
+//                    @Override
+////                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+////                        CorsConfiguration config = new CorsConfiguration();
+////                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+////                        config.setAllowedMethods(Collections.singletonList("*"));
+////                        config.setAllowCredentials(true);
+////                        config.setAllowedHeaders(Collections.singletonList("*"));
+////                        config.setMaxAge(3600L);
+////                        return config;
+////                    }
+////                }).and().csrf().ignoringAntMatchers("/contact").
+////                csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                http.csrf().disable().authorizeHttpRequests((auth) -> auth
                         .antMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                        .antMatchers("/notices", "/contact").permitAll()
+                        .antMatchers("/notices", "/contact","register").permitAll()
                 ).formLogin().and().httpBasic(Customizer.withDefaults());
         return http.build();
 

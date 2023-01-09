@@ -1,8 +1,11 @@
 package com.masai.securitysec3.Model;
 
+import org.springframework.stereotype.Service;
+
 import javax.persistence.*;
 
 @Entity
+@Service
 public class Authorities {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

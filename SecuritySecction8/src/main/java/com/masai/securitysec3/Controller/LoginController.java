@@ -5,7 +5,9 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
+import com.masai.securitysec3.Model.Authorities;
 import com.masai.securitysec3.Model.Customer;
+import com.masai.securitysec3.Repository.AuthoritiesDAO;
 import com.masai.securitysec3.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,13 @@ public class LoginController {
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
+	private Authorities authorities;
+	@Autowired
+	private  AuthoritiesDAO authoritiesDAO;
+
+	@Autowired
 	PasswordEncoder passwordEncoder;
+
 	@PostMapping("/register")
 	public ResponseEntity<String> registerUser(@RequestBody Customer customer){
 		Customer savedCustomer = null;
@@ -32,8 +40,13 @@ public class LoginController {
 			System.out.println(customer.getPwd());
 			String hashpwd = passwordEncoder.encode(customer.getPwd());
 			customer.setPwd(hashpwd);
+			customer.setRole("USER");
+
 			System.out.println(hashpwd);
 		savedCustomer = customerRepository.save(customer);
+			authorities.setName("USER");
+			authorities.setCustomer(savedCustomer);
+			authoritiesDAO.save(authorities);
 		if(savedCustomer.getId()>0){
 			responseEntity  = ResponseEntity.
 					status(HttpStatus.CREATED)

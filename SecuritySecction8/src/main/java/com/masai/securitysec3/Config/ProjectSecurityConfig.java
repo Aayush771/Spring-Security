@@ -53,20 +53,19 @@ public class ProjectSecurityConfig {
                         config.setMaxAge(3600L);
                         return config;
                     }
-                }).and().csrf().ignoringAntMatchers("/contact","register").
-                csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and().authorizeRequests()
+                }).and().csrf().disable()
+                .authorizeRequests()
                 /*.antMatchers("/myAccount").hasAuthority("VIEWACCOUNT").
                 antMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE").
                 antMatchers("myLoans").hasAuthority("VIEWLOANS")
                 .antMatchers("myCards").hasAuthority("VIEWCARDS")*/
-                .antMatchers("/myAccount").hasRole("user")
-                .antMatchers("/myBalance").hasAnyRole("user","Admin")
-                .antMatchers("myLoans").hasRole("user")
-                .antMatchers("myCards").hasRole("user")
-                .antMatchers("user")
-                .authenticated()
-                .antMatchers("/notices", "/contact", "register").permitAll()
+                .antMatchers("/myAccount").hasRole("USER")
+                .antMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+                .antMatchers("myLoans").hasRole("USER")
+                .antMatchers("myCards").hasRole("USER")
+                .antMatchers("user").authenticated()
+                .antMatchers("/notices", "/contact","/swagger-ui/index.html").permitAll()
+                .antMatchers("register").permitAll()
                 .and().formLogin().and().httpBasic(Customizer.withDefaults());
         return http.build();
 

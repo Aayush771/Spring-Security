@@ -35,8 +35,11 @@ public class MyController {
 		List<ResultDTO> list = new ArrayList<>();
 
 		for(Entry en:entries) {
+			String category1 = en.getCategory();
+			String ctgry[] = category1.split("\\s", 2);
 
-			if(en.getCategory().equals(category))
+
+			if(ctgry[0].equals(category))
 				list.add(new ResultDTO(en.getApi(), en.getDescription()));
 		}
 
